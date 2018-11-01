@@ -15,16 +15,26 @@ using the constructor() function.
 Create a button to roll all the dice at once.
 
 The finished product should end up looking something like this, and should randomly 
-generate a different value from the enum for each individual die when the "Roll Dice" button is pressed. */
+generate a different value from the enum for each individual die when the "Roll Dice" button is pressed. 
+
+Refactor your dieRoller class to be a module. DONE
+
+Create a namespace to hold the styling properties of your dice.
+
+Use Lodash to replace your iterator functions, or anywhere else you find it useful.
+
+Leverage the Chance.js library to enhance the randomness of your die rolls.
+*/
 
 //Declarations
 
-let squareSizeNum: number;
-squareSizeNum = 100;
+import {rollDice} from './dice.js';
+
+
 
 let numDados: number = 10;
 
-let squareSize: string = `${ squareSizeNum }px`;
+
 
 let suma: number;
 
@@ -73,68 +83,12 @@ interface ElementSet {
 let elementSets: Array<ElementSet> = [];
 let rollDiceClassArray : Array<rollDice> = [];
 
-enum Values {
-  Uno,
-  Dos,
-  Tres,
-  Cuatro,
-  Cinco,
-  Seis,
-  Siete,
-  Ocho,
-  Nueve,
-  Diez,
-  Once,
-  Doce
-}
 
-enum Colours {
-  red,
-  black,
-  blue,
-  maroon
-}
 
-class Dice {
-  div: Element;
-  h1: Element;
-  constructor(div: Element) {
-    this.div = div;
-    this.h1 = document.createElement('h1');
-    this.div.appendChild(this.h1);
-  }
-}
 
-class rollDice extends Dice {
-  static Values = Values;
-  static Colours = Colours;
-  constructor(div: Element) {
-    super(div);
-    (this.div as HTMLElement).style.width = squareSize;
-    (this.div as HTMLElement).style.height = squareSize;
-    (this.div as HTMLElement).style.lineHeight = "50px";
-  }
-  rollDie (value: number) : boolean {
-    (this.div as HTMLElement).textContent = Values[value];
-    return true;
-  }
-  setStyle(index: number) : void {
-    document.body.appendChild(this.div);
-    (this.div as HTMLElement).style.border = "Red solid 1px";
-    (this.div as HTMLElement).style.margin = "2px";
-    (this.div as HTMLElement).style.cssFloat = "left";
-    //(this.div as HTMLElement).style.verticalAlign = "top";
-    (this.div as HTMLElement).style.color = Colours[index];
-  }
-  setText() : void {
-    let parcial: number = getRandomIntInclusive(0, 11);
-    (this.h1 as HTMLElement).textContent = Values[parcial];
-    (this.h1 as HTMLElement).style.textAlign = "center";
-    suma += parcial + 1;
-  }
-}
+
 let titulo: Element = document.createElement('h1');
-document.body.appendChild(this.titulo);
+document.body.appendChild(titulo);
 (titulo as HTMLElement).textContent = "Los dados de la suerte! Juega y Gana!";
 (titulo as HTMLElement).style.textAlign = "center";
 (titulo as HTMLElement).style.margin = "10px";
@@ -144,7 +98,6 @@ for (let index: number = 0; index < numDados; index++) {
     'div': document.createElement('div'),
   })
 }
-
 
 elementSets.map( (elem, index) => {
   rollDiceClassArray[index] = new rollDice(elem.div);
@@ -159,7 +112,7 @@ document.body.appendChild(divH1);
   suma = 0;
   for (let index:number = 0; index < numDados; index++) {
     let dice : rollDice = rollDiceClassArray[index];
-    dice.setText();
+    suma = dice.setText() + suma + 1;
   }
   (h1 as HTMLElement).textContent = "Suma total: " + suma.toString() + " puntos.";
 }

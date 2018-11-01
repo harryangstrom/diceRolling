@@ -1,3 +1,4 @@
+"use strict";
 /* Use the following types in your application: Array, number, string, Boolean.
 
 Use an enum to declare the possible rolled values (Hint: They don't have to be numbers).
@@ -15,25 +16,20 @@ using the constructor() function.
 Create a button to roll all the dice at once.
 
 The finished product should end up looking something like this, and should randomly
-generate a different value from the enum for each individual die when the "Roll Dice" button is pressed. */
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+generate a different value from the enum for each individual die when the "Roll Dice" button is pressed.
+
+Refactor your dieRoller class to be a module. DONE
+
+Create a namespace to hold the styling properties of your dice.
+
+Use Lodash to replace your iterator functions, or anywhere else you find it useful.
+
+Leverage the Chance.js library to enhance the randomness of your die rolls.
+*/
+exports.__esModule = true;
 //Declarations
-var squareSizeNum;
-squareSizeNum = 100;
+var dice_js_1 = require("./dice.js");
 var numDados = 10;
-var squareSize = squareSizeNum + "px";
 var suma;
 //Pulsador para jugar
 var divButton = document.createElement('div');
@@ -66,69 +62,8 @@ var getRandomIntInclusive = function (min, max) {
 } */
 var elementSets = [];
 var rollDiceClassArray = [];
-var Values;
-(function (Values) {
-    Values[Values["Uno"] = 0] = "Uno";
-    Values[Values["Dos"] = 1] = "Dos";
-    Values[Values["Tres"] = 2] = "Tres";
-    Values[Values["Cuatro"] = 3] = "Cuatro";
-    Values[Values["Cinco"] = 4] = "Cinco";
-    Values[Values["Seis"] = 5] = "Seis";
-    Values[Values["Siete"] = 6] = "Siete";
-    Values[Values["Ocho"] = 7] = "Ocho";
-    Values[Values["Nueve"] = 8] = "Nueve";
-    Values[Values["Diez"] = 9] = "Diez";
-    Values[Values["Once"] = 10] = "Once";
-    Values[Values["Doce"] = 11] = "Doce";
-})(Values || (Values = {}));
-var Colours;
-(function (Colours) {
-    Colours[Colours["red"] = 0] = "red";
-    Colours[Colours["black"] = 1] = "black";
-    Colours[Colours["blue"] = 2] = "blue";
-    Colours[Colours["maroon"] = 3] = "maroon";
-})(Colours || (Colours = {}));
-var Dice = /** @class */ (function () {
-    function Dice(div) {
-        this.div = div;
-        this.h1 = document.createElement('h1');
-        this.div.appendChild(this.h1);
-    }
-    return Dice;
-}());
-var rollDice = /** @class */ (function (_super) {
-    __extends(rollDice, _super);
-    function rollDice(div) {
-        var _this = _super.call(this, div) || this;
-        _this.div.style.width = squareSize;
-        _this.div.style.height = squareSize;
-        _this.div.style.lineHeight = "50px";
-        return _this;
-    }
-    rollDice.prototype.rollDie = function (value) {
-        this.div.textContent = Values[value];
-        return true;
-    };
-    rollDice.prototype.setStyle = function (index) {
-        document.body.appendChild(this.div);
-        this.div.style.border = "Red solid 1px";
-        this.div.style.margin = "2px";
-        this.div.style.cssFloat = "left";
-        //(this.div as HTMLElement).style.verticalAlign = "top";
-        this.div.style.color = Colours[index];
-    };
-    rollDice.prototype.setText = function () {
-        var parcial = getRandomIntInclusive(0, 11);
-        this.h1.textContent = Values[parcial];
-        this.h1.style.textAlign = "center";
-        suma += parcial + 1;
-    };
-    rollDice.Values = Values;
-    rollDice.Colours = Colours;
-    return rollDice;
-}(Dice));
 var titulo = document.createElement('h1');
-document.body.appendChild(this.titulo);
+document.body.appendChild(titulo);
 titulo.textContent = "Los dados de la suerte! Juega y Gana!";
 titulo.style.textAlign = "center";
 titulo.style.margin = "10px";
@@ -139,7 +74,7 @@ for (var index = 0; index < numDados; index++) {
     });
 }
 elementSets.map(function (elem, index) {
-    rollDiceClassArray[index] = new rollDice(elem.div);
+    rollDiceClassArray[index] = new dice_js_1.rollDice(elem.div);
     rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, 3));
 });
 document.body.appendChild(divButton);
@@ -150,7 +85,7 @@ button.onclick = function (e) {
     suma = 0;
     for (var index = 0; index < numDados; index++) {
         var dice = rollDiceClassArray[index];
-        dice.setText();
+        suma = dice.setText() + suma + 1;
     }
     h1.textContent = "Suma total: " + suma.toString() + " puntos.";
 };
