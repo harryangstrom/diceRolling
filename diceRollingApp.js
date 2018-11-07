@@ -26,7 +26,7 @@ Use Lodash to replace your iterator functions, or anywhere else you find it usef
 
 Leverage the Chance.js library to enhance the randomness of your die rolls.
 */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 //Declarations
 var dice_js_1 = require("./dice.js");
 var numDados = 10;
@@ -70,7 +70,7 @@ titulo.style.margin = "10px";
 titulo.style.padding = "10 px";
 for (var index = 0; index < numDados; index++) {
     elementSets.push({
-        'div': document.createElement('div')
+        'div': document.createElement('div'),
     });
 }
 elementSets.map(function (elem, index) {
@@ -89,3 +89,4 @@ button.onclick = function (e) {
     }
     h1.textContent = "Suma total: " + suma.toString() + " puntos.";
 };
+//# sourceMappingURL=diceRollingApp.js.map

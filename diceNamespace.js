@@ -20,3 +20,4 @@ var styles;
     }
     styles.initialize = initialize;
 })(styles || (styles = {}));
+//# sourceMappingURL=diceNamespace.js.map

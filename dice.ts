@@ -26,14 +26,23 @@ enum Colours {
   maroon
 }
 
+interface dado {
+  div: Element;
+  h1: Element;
+  rollDie(val: number) : boolean;
+}
 
 let squareSizeNum: number;
 squareSizeNum = 100;
 let squareSize: string = `${ squareSizeNum }px`;
 
-class Dice {
+class Dice implements dado{
   div: Element;
   h1: Element;
+  rollDie (value: number) : boolean {
+    (this.div as HTMLElement).textContent = Values[value];
+    return true;
+  }
   constructor(div: Element) {
     this.div = div;
     this.h1 = document.createElement('h1');
@@ -52,10 +61,7 @@ export class rollDice extends Dice {
     (this.div as HTMLElement).style.height = squareSize;
     (this.div as HTMLElement).style.lineHeight = "50px"; */
   }
-  rollDie (value: number) : boolean {
-    (this.div as HTMLElement).textContent = Values[value];
-    return true;
-  }
+
   setStyle(index: number) : void {
     document.body.appendChild(this.div);
     styles.style(this.div, Colours[index]);

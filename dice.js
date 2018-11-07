@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var Values;
 (function (Values) {
     Values[Values["Uno"] = 0] = "Uno";
@@ -45,6 +45,10 @@ var Dice = /** @class */ (function () {
         this.h1 = document.createElement('h1');
         this.div.appendChild(this.h1);
     }
+    Dice.prototype.rollDie = function (value) {
+        this.div.textContent = Values[value];
+        return true;
+    };
     return Dice;
 }());
 var rollDice = /** @class */ (function (_super) {
@@ -57,10 +61,6 @@ var rollDice = /** @class */ (function (_super) {
             (this.div as HTMLElement).style.height = squareSize;
             (this.div as HTMLElement).style.lineHeight = "50px"; */
     }
-    rollDice.prototype.rollDie = function (value) {
-        this.div.textContent = Values[value];
-        return true;
-    };
     rollDice.prototype.setStyle = function (index) {
         document.body.appendChild(this.div);
         styles.style(this.div, Colours[index]);
@@ -87,3 +87,4 @@ var getRandomIntInclusive = function (min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+//# sourceMappingURL=dice.js.map
