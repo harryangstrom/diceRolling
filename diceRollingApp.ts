@@ -28,7 +28,7 @@ Leverage the Chance.js library to enhance the randomness of your die rolls.
 
 //Declarations
 
-import {rollDice} from './dice.js';
+import {Dice} from './diceMixin.js';
 
 
 
@@ -81,7 +81,7 @@ interface ElementSet {
 } */
 
 let elementSets: Array<ElementSet> = [];
-let rollDiceClassArray : Array<rollDice> = [];
+let rollDiceClassArray : Array<Dice> = [];
 
 
 
@@ -100,7 +100,7 @@ for (let index: number = 0; index < numDados; index++) {
 }
 
 elementSets.map( (elem, index) => {
-  rollDiceClassArray[index] = new rollDice(elem.div);
+  rollDiceClassArray[index] = new Dice(elem.div);
   rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, 3));
 })
 
@@ -111,7 +111,7 @@ document.body.appendChild(divH1);
 (button as HTMLElement).onclick = (e) => {
   suma = 0;
   for (let index:number = 0; index < numDados; index++) {
-    let dice : rollDice = rollDiceClassArray[index];
+    let dice : Dice = rollDiceClassArray[index];
     suma = dice.setText() + suma + 1;
   }
   (h1 as HTMLElement).textContent = "Suma total: " + suma.toString() + " puntos.";

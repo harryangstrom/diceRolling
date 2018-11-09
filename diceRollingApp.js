@@ -28,7 +28,7 @@ Leverage the Chance.js library to enhance the randomness of your die rolls.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
 //Declarations
-var dice_js_1 = require("./dice.js");
+var diceMixin_js_1 = require("./diceMixin.js");
 var numDados = 10;
 var suma;
 //Pulsador para jugar
@@ -74,7 +74,7 @@ for (var index = 0; index < numDados; index++) {
     });
 }
 elementSets.map(function (elem, index) {
-    rollDiceClassArray[index] = new dice_js_1.rollDice(elem.div);
+    rollDiceClassArray[index] = new diceMixin_js_1.Dice(elem.div);
     rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, 3));
 });
 document.body.appendChild(divButton);
