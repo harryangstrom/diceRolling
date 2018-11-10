@@ -26,11 +26,6 @@ interface dado {
   rollDie(val: number) : boolean;
 }
 
-
-
-
-
-
 export class classDice implements dado{
   div: Element;
   h1: Element;
@@ -43,17 +38,11 @@ export class classDice implements dado{
   }
 }
 
-
-
-
-
 let getRandomIntInclusive: Function = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-
 
 export class styles {
   div: Element;
@@ -92,9 +81,23 @@ export class styles {
 
   setText() : number {
     let parcial: number = getRandomIntInclusive(0, 11);
-/*     (this.h1 as HTMLElement).textContent = Values[parcial];
-    (this.h1 as HTMLElement).style.textAlign = "center"; */
-    this.text(this.h1, Values[parcial]);
+    let actualNumbStr: string = (this.h1 as HTMLElement).textContent;
+    if (actualNumbStr === "") {
+      this.text(this.h1, Values[0]);
+      actualNumbStr = "Uno";
+    }
+    let actualNumber: number = Values[actualNumbStr];
+    let parcialTemp: number = parcial + 12;
+    let cont: number = actualNumber;
+    let timer = setInterval(() => {
+      this.text(this.h1, Values[cont%12]);
+      cont++;
+      if (cont === parcialTemp + 1) {
+        clearInterval(timer);
+      }
+    }, 150);
+    console.log(parcial);
+
     return parcial;
   }
 

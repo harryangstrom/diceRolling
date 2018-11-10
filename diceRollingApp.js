@@ -29,7 +29,7 @@ Leverage the Chance.js library to enhance the randomness of your die rolls.
 Object.defineProperty(exports, "__esModule", { value: true });
 //Declarations
 var diceMixin_js_1 = require("./diceMixin.js");
-var numDados = 10;
+var numDados = 5;
 var suma;
 //Pulsador para jugar
 var divButton = document.createElement('div');

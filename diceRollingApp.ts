@@ -32,7 +32,7 @@ import {Dice} from './diceMixin.js';
 
 
 
-let numDados: number = 10;
+let numDados: number = 5;
 
 
 

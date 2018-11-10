@@ -68,10 +68,24 @@ var styles = /** @class */ (function () {
             (this.div as HTMLElement).style.color = Colours[index]; */
     };
     styles.prototype.setText = function () {
+        var _this = this;
         var parcial = getRandomIntInclusive(0, 11);
-        /*     (this.h1 as HTMLElement).textContent = Values[parcial];
-            (this.h1 as HTMLElement).style.textAlign = "center"; */
-        this.text(this.h1, Values[parcial]);
+        var actualNumbStr = this.h1.textContent;
+        if (actualNumbStr === "") {
+            this.text(this.h1, Values[0]);
+            actualNumbStr = "Uno";
+        }
+        var actualNumber = Values[actualNumbStr];
+        var parcialTemp = parcial + 12;
+        var cont = actualNumber;
+        var timer = setInterval(function () {
+            _this.text(_this.h1, Values[cont % 12]);
+            cont++;
+            if (cont === parcialTemp + 1) {
+                clearInterval(timer);
+            }
+        }, 150);
+        console.log(parcial);
         return parcial;
     };
     styles.Values = Values;
