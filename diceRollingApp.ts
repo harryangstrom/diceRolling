@@ -33,6 +33,7 @@ import {Dice} from './diceMixin.js';
 
 
 let numDados: number = 5;
+let numColores: number = 9;
 
 
 
@@ -101,7 +102,7 @@ for (let index: number = 0; index < numDados; index++) {
 
 elementSets.map( (elem, index) => {
   rollDiceClassArray[index] = new Dice(elem.div);
-  rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, 3));
+  rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, numColores - 1));
 })
 
 document.body.appendChild(divButton);

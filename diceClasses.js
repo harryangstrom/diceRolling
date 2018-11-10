@@ -21,6 +21,11 @@ var Colours;
     Colours[Colours["black"] = 1] = "black";
     Colours[Colours["blue"] = 2] = "blue";
     Colours[Colours["maroon"] = 3] = "maroon";
+    Colours[Colours["pink"] = 4] = "pink";
+    Colours[Colours["green"] = 5] = "green";
+    Colours[Colours["yellow"] = 6] = "yellow";
+    Colours[Colours["orange"] = 7] = "orange";
+    Colours[Colours["brown"] = 8] = "brown";
 })(Colours || (Colours = {}));
 var classDice = /** @class */ (function () {
     function classDice() {

@@ -30,6 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //Declarations
 var diceMixin_js_1 = require("./diceMixin.js");
 var numDados = 5;
+var numColores = 9;
 var suma;
 //Pulsador para jugar
 var divButton = document.createElement('div');
@@ -75,7 +76,7 @@ for (var index = 0; index < numDados; index++) {
 }
 elementSets.map(function (elem, index) {
     rollDiceClassArray[index] = new diceMixin_js_1.Dice(elem.div);
-    rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, 3));
+    rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, numColores - 1));
 });
 document.body.appendChild(divButton);
 document.body.appendChild(divH1);

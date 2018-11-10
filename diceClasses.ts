@@ -17,7 +17,12 @@ enum Colours {
   red,
   black,
   blue,
-  maroon
+  maroon,
+  pink,
+  green,
+  yellow,
+  orange,
+  brown
 }
 
 interface dado {
