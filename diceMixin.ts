@@ -10,7 +10,7 @@ export class Dice implements dC.classDice, dC.styles {
   h1: Element;
   rollDie: (value: number) => boolean;
   setStyle: (index: number) => void;
-  setText: () => number;
+  setText: (num: number) => number;
   text: (h1: Element, vl: string) => void;
   style: (div: Element, color: string) => void;
   initialize: (div: Element, sqsz: string) => void;

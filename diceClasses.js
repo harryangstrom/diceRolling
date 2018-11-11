@@ -26,44 +26,51 @@ var Colours;
     Colours[Colours["yellow"] = 6] = "yellow";
     Colours[Colours["orange"] = 7] = "orange";
     Colours[Colours["brown"] = 8] = "brown";
+    Colours[Colours["aquamarine"] = 9] = "aquamarine";
+    Colours[Colours["navy"] = 10] = "navy";
+    Colours[Colours["silver"] = 11] = "silver";
 })(Colours || (Colours = {}));
-var classDice = /** @class */ (function () {
-    function classDice() {
+class genericClass {
+    setVal(val) {
+        this.val = val;
     }
-    classDice.prototype.rollDie = function (value) {
+    getVal() {
+        return this.val;
+    }
+}
+exports.genericClass = genericClass;
+class classDice {
+    rollDie(value) {
         this.div.textContent = Values[value];
         return true;
-    };
-    classDice.Values = Values;
-    classDice.Colours = Colours;
-    return classDice;
-}());
+    }
+}
+classDice.Values = Values;
+classDice.Colours = Colours;
 exports.classDice = classDice;
-var getRandomIntInclusive = function (min, max) {
+let getRandomIntInclusive = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-var styles = /** @class */ (function () {
-    function styles() {
-    }
-    styles.prototype.text = function (h1, val) {
+class styles {
+    text(h1, val) {
         h1.textContent = val;
         h1.style.textAlign = "center";
-    };
-    styles.prototype.style = function (div, color) {
+    }
+    style(div, color) {
         div.style.border = "Red solid 1px";
         div.style.margin = "2px";
         div.style.cssFloat = "left";
         //(this.div as HTMLElement).style.verticalAlign = "top";
         div.style.color = color;
-    };
-    styles.prototype.initialize = function (div, sqsz) {
+    }
+    initialize(div, sqsz) {
         div.style.width = sqsz;
         div.style.height = sqsz;
         div.style.lineHeight = "50px";
-    };
-    styles.prototype.setStyle = function (index) {
+    }
+    setStyle(index) {
         document.body.appendChild(this.div);
         this.style(this.div, Colours[index]);
         /*     (this.div as HTMLElement).style.border = "Red solid 1px";
@@ -71,20 +78,19 @@ var styles = /** @class */ (function () {
             (this.div as HTMLElement).style.cssFloat = "left";
             //(this.div as HTMLElement).style.verticalAlign = "top";
             (this.div as HTMLElement).style.color = Colours[index]; */
-    };
-    styles.prototype.setText = function () {
-        var _this = this;
-        var parcial = getRandomIntInclusive(0, 11);
-        var actualNumbStr = this.h1.textContent;
+    }
+    setText(num) {
+        let parcial = num;
+        let actualNumbStr = this.h1.textContent;
         if (actualNumbStr === "") {
             this.text(this.h1, Values[0]);
             actualNumbStr = "Uno";
         }
-        var actualNumber = Values[actualNumbStr];
-        var parcialTemp = parcial + 12;
-        var cont = actualNumber;
-        var timer = setInterval(function () {
-            _this.text(_this.h1, Values[cont % 12]);
+        let actualNumber = Values[actualNumbStr];
+        let parcialTemp = parcial + 12;
+        let cont = actualNumber;
+        let timer = setInterval(() => {
+            this.text(this.h1, Values[cont % 12]);
             cont++;
             if (cont === parcialTemp + 1) {
                 clearInterval(timer);
@@ -92,10 +98,9 @@ var styles = /** @class */ (function () {
         }, 150);
         console.log(parcial);
         return parcial;
-    };
-    styles.Values = Values;
-    styles.Colours = Colours;
-    return styles;
-}());
+    }
+}
+styles.Values = Values;
+styles.Colours = Colours;
 exports.styles = styles;
 //# sourceMappingURL=diceClasses.js.map

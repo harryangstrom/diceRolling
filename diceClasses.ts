@@ -22,7 +22,20 @@ enum Colours {
   green,
   yellow,
   orange,
-  brown
+  brown,
+  aquamarine,
+  navy,
+  silver
+}
+
+export class genericClass<T> {
+  val: T;
+  setVal(val: T) {
+    this.val = val;
+  }
+  getVal(): T{
+    return this.val;
+  }
 }
 
 interface dado {
@@ -84,8 +97,8 @@ export class styles {
     (this.div as HTMLElement).style.color = Colours[index]; */
   }
 
-  setText() : number {
-    let parcial: number = getRandomIntInclusive(0, 11);
+  setText(num: number): number {
+    let parcial: number = num;
     let actualNumbStr: string = (this.h1 as HTMLElement).textContent;
     if (actualNumbStr === "") {
       this.text(this.h1, Values[0]);

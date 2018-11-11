@@ -1,18 +1,5 @@
 "use strict";
 /// <reference path="diceNamespace.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Values;
 (function (Values) {
@@ -36,32 +23,29 @@ var Colours;
     Colours[Colours["blue"] = 2] = "blue";
     Colours[Colours["maroon"] = 3] = "maroon";
 })(Colours || (Colours = {}));
-var squareSizeNum;
+let squareSizeNum;
 squareSizeNum = 100;
-var squareSize = squareSizeNum + "px";
-var Dice = /** @class */ (function () {
-    function Dice(div) {
+let squareSize = `${squareSizeNum}px`;
+class Dice {
+    rollDie(value) {
+        this.div.textContent = Values[value];
+        return true;
+    }
+    constructor(div) {
         this.div = div;
         this.h1 = document.createElement('h1');
         this.div.appendChild(this.h1);
     }
-    Dice.prototype.rollDie = function (value) {
-        this.div.textContent = Values[value];
-        return true;
-    };
-    return Dice;
-}());
-var rollDice = /** @class */ (function (_super) {
-    __extends(rollDice, _super);
-    function rollDice(div) {
-        var _this = _super.call(this, div) || this;
-        styles.initialize(_this.div, squareSize);
-        return _this;
+}
+class rollDice extends Dice {
+    constructor(div) {
+        super(div);
+        styles.initialize(this.div, squareSize);
         /*     (this.div as HTMLElement).style.width = squareSize;
             (this.div as HTMLElement).style.height = squareSize;
             (this.div as HTMLElement).style.lineHeight = "50px"; */
     }
-    rollDice.prototype.setStyle = function (index) {
+    setStyle(index) {
         document.body.appendChild(this.div);
         styles.style(this.div, Colours[index]);
         /*     (this.div as HTMLElement).style.border = "Red solid 1px";
@@ -69,20 +53,19 @@ var rollDice = /** @class */ (function (_super) {
             (this.div as HTMLElement).style.cssFloat = "left";
             //(this.div as HTMLElement).style.verticalAlign = "top";
             (this.div as HTMLElement).style.color = Colours[index]; */
-    };
-    rollDice.prototype.setText = function () {
-        var parcial = getRandomIntInclusive(0, 11);
+    }
+    setText() {
+        let parcial = getRandomIntInclusive(0, 11);
         /*     (this.h1 as HTMLElement).textContent = Values[parcial];
             (this.h1 as HTMLElement).style.textAlign = "center"; */
         styles.text(this.h1, Values[parcial]);
         return parcial;
-    };
-    rollDice.Values = Values;
-    rollDice.Colours = Colours;
-    return rollDice;
-}(Dice));
+    }
+}
+rollDice.Values = Values;
+rollDice.Colours = Colours;
 exports.rollDice = rollDice;
-var getRandomIntInclusive = function (min, max) {
+let getRandomIntInclusive = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;

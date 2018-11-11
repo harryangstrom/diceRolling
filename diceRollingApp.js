@@ -28,32 +28,45 @@ Leverage the Chance.js library to enhance the randomness of your die rolls.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
 //Declarations
-var diceMixin_js_1 = require("./diceMixin.js");
-var numDados = 5;
-var numColores = 9;
-var suma;
+const diceMixin_js_1 = require("./diceMixin.js");
+const diceClasses_js_1 = require("./diceClasses.js");
+const randomClass_js_1 = require("./randomClass.js");
+let numDados = 6;
+//let numColores: number = 9;
+let numSides = 12;
+let suma;
 //Pulsador para jugar
-var divButton = document.createElement('div');
-divButton.style.width = "300px";
-divButton.style.height = "100px";
-divButton.style.cssFloat = "left";
-divButton.style.padding = "50px 50px 0 50px";
-var divH1 = document.createElement('div');
+//TODO crear una genericClass<T> y el typeguard
+let divButton = new diceClasses_js_1.genericClass();
+divButton.setVal(document.createElement('div'));
+let divButtonVal = divButton.getVal();
+let divButtonValHTML = convertElement(divButtonVal);
+/* let divButton: Element = document.createElement('div'); */
+divButtonValHTML.style.width = "300px";
+divButtonValHTML.style.height = "100px";
+divButtonValHTML.style.cssFloat = "left";
+divButtonValHTML.style.padding = "50px 50px 0 50px";
+let divH1 = document.createElement('div');
 divH1.style.width = "350px";
 divH1.style.height = "100px";
 divH1.style.cssFloat = "left";
 divH1.style.padding = "50px 50px 0 50";
 divH1.style.lineHeight = "25px";
-var button = document.createElement('button');
+let button = document.createElement('button');
 button.style.width = "250px";
 button.style.height = "50px";
 button.style.borderRadius = "10px";
-divButton.appendChild(button);
-var h1 = document.createElement('h1');
+divButtonValHTML.appendChild(button);
+let h1 = document.createElement('h1');
 h1.style.color = "red";
 h1.style.textAlign = "center";
 divH1.appendChild(h1);
-var getRandomIntInclusive = function (min, max) {
+let randomNumbers = new randomClass_js_1.Random(0, numSides - 1);
+/* while (randomNumbers.isFullFilledPromise) {
+  console.log('Waiting');
+} */
+//setInterval(() => console.log('number: ', randomNumbers.giveMeNumber()), 1000);
+let getRandomIntInclusive = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -61,33 +74,55 @@ var getRandomIntInclusive = function (min, max) {
 /* interface DiceSet {
   dice: rollDice
 } */
-var elementSets = [];
-var rollDiceClassArray = [];
-var titulo = document.createElement('h1');
+let elementSets = [];
+let rollDiceClassArray = [];
+let titulo = document.createElement('h1');
 document.body.appendChild(titulo);
 titulo.textContent = "Los dados de la suerte! Juega y Gana!";
 titulo.style.textAlign = "center";
 titulo.style.margin = "10px";
 titulo.style.padding = "10 px";
-for (var index = 0; index < numDados; index++) {
+for (let index = 0; index < numDados; index++) {
     elementSets.push({
         'div': document.createElement('div'),
     });
 }
-elementSets.map(function (elem, index) {
-    rollDiceClassArray[index] = new diceMixin_js_1.Dice(elem.div);
-    rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, numColores - 1));
+randomNumbers.fetchRandomNumber()
+    .then(response => {
+    elementSets.map((elem, index) => {
+        rollDiceClassArray[index] = new diceMixin_js_1.Dice(elem.div);
+        //rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, numColores - 1));
+        randomNumbers.giveMeNumber()
+            .then(response => {
+            rollDiceClassArray[index].setStyle(response);
+        });
+    });
 });
-document.body.appendChild(divButton);
+document.body.appendChild(divButtonValHTML);
 document.body.appendChild(divH1);
 button.textContent = "Roll Dice";
-divButton.style.clear = "both";
-button.onclick = function (e) {
+divButtonValHTML.style.clear = "both";
+button.onclick = (e) => {
     suma = 0;
-    for (var index = 0; index < numDados; index++) {
-        var dice = rollDiceClassArray[index];
-        suma = dice.setText() + suma + 1;
+    for (let index = 0; index < numDados; index++) {
+        let dice = rollDiceClassArray[index];
+        randomNumbers.giveMeNumber()
+            .then(response => {
+            console.log("suma: ", suma);
+            suma = dice.setText(response) + suma + 1;
+            h1.textContent = "Suma total: " + suma.toString() + " puntos.";
+        });
     }
-    h1.textContent = "Suma total: " + suma.toString() + " puntos.";
 };
+function convertElement(elem) {
+    if (!isHTMLElement(elem)) {
+        return elem;
+    }
+    else {
+        return elem;
+    }
+}
+function isHTMLElement(x) {
+    return x.style !== undefined;
+}
 //# sourceMappingURL=diceRollingApp.js.map

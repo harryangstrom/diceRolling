@@ -29,11 +29,12 @@ Leverage the Chance.js library to enhance the randomness of your die rolls.
 //Declarations
 
 import {Dice} from './diceMixin.js';
+import {genericClass} from './diceClasses.js'
+import {Random} from './randomClass.js'
 
-
-
-let numDados: number = 5;
-let numColores: number = 9;
+let numDados: number = 6;
+//let numColores: number = 9;
+let numSides = 12;
 
 
 
@@ -42,30 +43,46 @@ let suma: number;
 
 //Pulsador para jugar
 
-let divButton: Element = document.createElement('div');
-(divButton as HTMLElement).style.width = "300px";
-(divButton as HTMLElement).style.height = "100px";
-(divButton as HTMLElement).style.cssFloat = "left";
-(divButton as HTMLElement).style.padding = "50px 50px 0 50px";
+//TODO crear una genericClass<T> y el typeguard
+
+let divButton = new genericClass<Element>();
+divButton.setVal(document.createElement('div'));
+
+let divButtonVal = divButton.getVal();
+
+let divButtonValHTML = convertElement(divButtonVal);
+
+/* let divButton: Element = document.createElement('div'); */
+divButtonValHTML.style.width = "300px";
+divButtonValHTML.style.height = "100px";
+divButtonValHTML.style.cssFloat = "left";
+divButtonValHTML.style.padding = "50px 50px 0 50px";
 
 
-let divH1: Element = document.createElement('div');
-(divH1 as HTMLElement).style.width = "350px";
-(divH1 as HTMLElement).style.height = "100px";
-(divH1 as HTMLElement).style.cssFloat = "left";
-(divH1 as HTMLElement).style.padding = "50px 50px 0 50";
-(divH1 as HTMLElement).style.lineHeight = "25px";
+let divH1: HTMLElement = document.createElement('div');
+divH1.style.width = "350px";
+divH1.style.height = "100px";
+divH1.style.cssFloat = "left";
+divH1.style.padding = "50px 50px 0 50";
+divH1.style.lineHeight = "25px";
 
-let button: Element = document.createElement('button');
-(button as HTMLElement).style.width = "250px";
-(button as HTMLElement).style.height = "50px";
-(button as HTMLElement).style.borderRadius = "10px";
-divButton.appendChild(button);
+let button: HTMLElement = document.createElement('button');
+button.style.width = "250px";
+button.style.height = "50px";
+button.style.borderRadius = "10px";
+divButtonValHTML.appendChild(button);
 
-let h1: Element = document.createElement('h1');
-(h1 as HTMLElement).style.color = "red";
-(h1 as HTMLElement).style.textAlign = "center";
+let h1: HTMLElement = document.createElement('h1');
+h1.style.color = "red";
+h1.style.textAlign = "center";
 divH1.appendChild(h1);
+
+let randomNumbers = new Random(0, numSides - 1);
+
+/* while (randomNumbers.isFullFilledPromise) {
+  console.log('Waiting');
+} */
+//setInterval(() => console.log('number: ', randomNumbers.giveMeNumber()), 1000);
 
 let getRandomIntInclusive: Function = (min, max) => {
   min = Math.ceil(min);
@@ -88,35 +105,63 @@ let rollDiceClassArray : Array<Dice> = [];
 
 
 
-let titulo: Element = document.createElement('h1');
+let titulo: HTMLElement = document.createElement('h1');
 document.body.appendChild(titulo);
-(titulo as HTMLElement).textContent = "Los dados de la suerte! Juega y Gana!";
-(titulo as HTMLElement).style.textAlign = "center";
-(titulo as HTMLElement).style.margin = "10px";
-(titulo as HTMLElement).style.padding = "10 px";
+titulo.textContent = "Los dados de la suerte! Juega y Gana!";
+titulo.style.textAlign = "center";
+titulo.style.margin = "10px";
+titulo.style.padding = "10 px";
+
 for (let index: number = 0; index < numDados; index++) {
   elementSets.push({
     'div': document.createElement('div'),
   })
 }
 
-elementSets.map( (elem, index) => {
-  rollDiceClassArray[index] = new Dice(elem.div);
-  rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, numColores - 1));
-})
 
-document.body.appendChild(divButton);
+randomNumbers.fetchRandomNumber()
+  .then(response => {
+    elementSets.map( (elem, index) => {
+      rollDiceClassArray[index] = new Dice(elem.div);
+      //rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, numColores - 1));
+      randomNumbers.giveMeNumber()
+        .then(response => {
+          rollDiceClassArray[index].setStyle(response);
+        })
+    })
+  })
+
+
+document.body.appendChild(divButtonValHTML);
 document.body.appendChild(divH1);
 (button as HTMLElement).textContent = "Roll Dice";
-(divButton as HTMLElement).style.clear = "both";
+divButtonValHTML.style.clear = "both";
+
 (button as HTMLElement).onclick = (e) => {
   suma = 0;
   for (let index:number = 0; index < numDados; index++) {
     let dice : Dice = rollDiceClassArray[index];
-    suma = dice.setText() + suma + 1;
+    randomNumbers.giveMeNumber()
+      .then(response => {
+        console.log("suma: ", suma);
+        suma = dice.setText(response) + suma + 1;
+        h1.textContent = "Suma total: " + suma.toString() + " puntos.";
+      })
   }
-  (h1 as HTMLElement).textContent = "Suma total: " + suma.toString() + " puntos.";
+  
 }
   
 
 
+function convertElement(elem: Element | HTMLElement): HTMLElement {
+  if (!isHTMLElement(elem)) {
+    return <HTMLElement>elem;
+  }
+  else {
+    return elem;
+  }
+}
+
+function isHTMLElement(x: any): x is HTMLElement {
+  return x.style !== undefined;
+}
