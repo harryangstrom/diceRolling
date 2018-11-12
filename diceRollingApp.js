@@ -61,56 +61,51 @@ let h1 = document.createElement('h1');
 h1.style.color = "red";
 h1.style.textAlign = "center";
 divH1.appendChild(h1);
-let randomNumbers = new randomClass_js_1.Random(0, numSides - 1);
-/* while (randomNumbers.isFullFilledPromise) {
-  console.log('Waiting');
-} */
-//setInterval(() => console.log('number: ', randomNumbers.giveMeNumber()), 1000);
-let getRandomIntInclusive = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-};
 /* interface DiceSet {
   dice: rollDice
 } */
 let elementSets = [];
 let rollDiceClassArray = [];
+let randomArray = [];
 let titulo = document.createElement('h1');
 document.body.appendChild(titulo);
 titulo.textContent = "Los dados de la suerte! Juega y Gana!";
 titulo.style.textAlign = "center";
 titulo.style.margin = "10px";
 titulo.style.padding = "10 px";
+document.body.appendChild(divButtonValHTML);
+document.body.appendChild(divH1);
+button.textContent = "Roll Dice";
+divButtonValHTML.style.clear = "both";
 for (let index = 0; index < numDados; index++) {
     elementSets.push({
         'div': document.createElement('div'),
     });
 }
-randomNumbers.fetchRandomNumber()
-    .then(response => {
-    elementSets.map((elem, index) => {
-        rollDiceClassArray[index] = new diceMixin_js_1.Dice(elem.div);
-        //rollDiceClassArray[index].setStyle(getRandomIntInclusive(0, numColores - 1));
-        randomNumbers.giveMeNumber()
+elementSets.map((elem, index) => {
+    rollDiceClassArray[index] = new diceMixin_js_1.Dice(elem.div);
+    randomArray[index] = new randomClass_js_1.Random(0, numSides - 1);
+    randomArray[index].fetchRandomNumber()
+        .then(response => {
+        randomArray[index].giveMeNumber()
             .then(response => {
             rollDiceClassArray[index].setStyle(response);
         });
     });
 });
-document.body.appendChild(divButtonValHTML);
-document.body.appendChild(divH1);
-button.textContent = "Roll Dice";
-divButtonValHTML.style.clear = "both";
 button.onclick = (e) => {
     suma = 0;
+    button.setAttribute('disabled', 'true');
     for (let index = 0; index < numDados; index++) {
         let dice = rollDiceClassArray[index];
-        randomNumbers.giveMeNumber()
+        randomArray[index].giveMeNumber()
             .then(response => {
             console.log("suma: ", suma);
             suma = dice.setText(response) + suma + 1;
             h1.textContent = "Suma total: " + suma.toString() + " puntos.";
+            setTimeout(() => {
+                button.removeAttribute('disabled');
+            }, 10000);
         });
     }
 };

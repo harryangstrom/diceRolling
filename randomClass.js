@@ -16,7 +16,10 @@ class Random {
         return new Promise((resolve, reject) => {
             let tempNum = this.randomNumbers.pop();
             if (this.randomNumbers.length === 0) {
-                this.renewNumbers();
+                this.renewNumbers()
+                    .then(response => {
+                    resolve(tempNum);
+                });
             }
             resolve(tempNum);
         });
@@ -25,7 +28,9 @@ class Random {
         return this.fullFilledPromise;
       } */
     renewNumbers() {
-        this.fetchRandomNumber();
+        return new Promise((resolve, reject) => {
+            resolve(this.fetchRandomNumber());
+        });
     }
     fetchRandomNumber() {
         let myHeaders = new Headers({
@@ -49,7 +54,7 @@ class Random {
             headers: myHeaders,
             body: JSON.stringify(myBody)
         };
-        //this.fullFilledPromise = false;
+        this.fullFilledPromise = false;
         return new Promise((resolve, reject) => {
             fetch(this.urlRandom, myInit)
                 .then(response => {
@@ -58,7 +63,7 @@ class Random {
             })
                 .then(response => {
                 this.randomNumbers = response.result.random.data;
-                //this.fullFilledPromise = true;
+                this.fullFilledPromise = true;
                 resolve(this.fullFilledPromise);
                 console.log('Array: ', this.randomNumbers);
                 //return response.result.random.data;
