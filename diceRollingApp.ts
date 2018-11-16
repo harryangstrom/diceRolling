@@ -32,6 +32,7 @@ import {Dice} from './diceMixin.js';
 import {genericClass} from './diceClasses.js'
 import {Random} from './randomClass.js'
 
+
 let numDados: number = 6;
 //let numColores: number = 9;
 let numSides = 12;

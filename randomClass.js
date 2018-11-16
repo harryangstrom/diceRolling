@@ -1,15 +1,32 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-class Random {
+const decoratorNumbers_js_1 = require("./decoratorNumbers.js");
+function decimal(constructor) {
+    constructor.prototype.dec = true;
+    return constructor;
+}
+let Random = class Random {
     constructor(min, max) {
         this.randomNumbers = [];
+        this.randomDecNumbers = [];
         this.quantity = 50;
-        this.API = "5608a661-6f7d-4e9a-8483-f9aa397a20c8";
+        // private API: string = "5608a661-6f7d-4e9a-8483-f9aa397a20c8";
+        this.API = "00000000-0000-0000-0000-000000000000";
         this.urlRandom = "https://api.random.org/json-rpc/1/invoke";
         this.apiMethod = "generateIntegers";
         this.fullFilledPromise = false;
         this.max = max;
         this.min = min;
+        if (this.dec) {
+            this.apiMethod = "generateDecimalFractions";
+        }
+        console.log(this.apiMethod);
         //this.fetchRandomNumber(this.quantity, this.max, this.min);
     }
     giveMeNumber() {
@@ -36,19 +53,35 @@ class Random {
         let myHeaders = new Headers({
             "Content-Type": "application/json-rpc"
         });
-        let myBody = {
-            jsonrpc: 2.0,
-            method: this.apiMethod,
-            params: {
-                apiKey: this.API,
-                n: this.quantity,
-                min: this.min,
-                max: this.max,
-                replacement: 'true',
-                base: 10
-            },
-            id: 345
-        };
+        let myBody;
+        if (this.apiMethod === "generateIntegers") {
+            myBody = {
+                jsonrpc: 2.0,
+                method: this.apiMethod,
+                params: {
+                    apiKey: this.API,
+                    n: this.quantity,
+                    min: this.min,
+                    max: this.max,
+                    replacement: 'true',
+                    base: 10
+                },
+                id: 345
+            };
+        }
+        else {
+            myBody = {
+                jsonrpc: 2.0,
+                method: this.apiMethod,
+                params: {
+                    apiKey: this.API,
+                    n: this.quantity,
+                    decimalPlaces: this.max,
+                    replacement: 'true'
+                },
+                id: 346
+            };
+        }
         let myInit = {
             method: 'POST',
             headers: myHeaders,
@@ -62,7 +95,27 @@ class Random {
                 return resp;
             })
                 .then(response => {
-                this.randomNumbers = response.result.random.data;
+                if (this.apiMethod === "generateIntegers") {
+                    console.log(response);
+                    this.randomNumbers = response.result.random.data;
+                    return this.randomNumbers;
+                    console.log('Array generateIntegers: ', this.randomNumbers);
+                    //return response.result.random.data;
+                }
+                else {
+                    console.log(response);
+                    this.randomDecNumbers = response.result.random.data;
+                    console.log('decimal');
+                    return this.randomDecNumbers;
+                }
+                ;
+            })
+                .then(response => {
+                if (this.apiMethod === "generateDecimalFractions") {
+                    this.randomNumbers = response.map((e) => {
+                        return Math.floor(e * this.max);
+                    });
+                }
                 this.fullFilledPromise = true;
                 resolve(this.fullFilledPromise);
                 console.log('Array: ', this.randomNumbers);
@@ -70,6 +123,9 @@ class Random {
             });
         });
     }
-}
+};
+Random = __decorate([
+    decoratorNumbers_js_1.Decimal
+], Random);
 exports.Random = Random;
 //# sourceMappingURL=randomClass.js.map

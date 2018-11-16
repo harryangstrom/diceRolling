@@ -48,11 +48,6 @@ class classDice {
 classDice.Values = Values;
 classDice.Colours = Colours;
 exports.classDice = classDice;
-let getRandomIntInclusive = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-};
 class styles {
     text(h1, val) {
         h1.textContent = val;
