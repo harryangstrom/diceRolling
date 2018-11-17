@@ -36,7 +36,6 @@ let numDados = 6;
 let numSides = 12;
 let suma;
 //Pulsador para jugar
-//TODO crear una genericClass<T> y el typeguard
 let divButton = new diceClasses_js_1.genericClass();
 divButton.setVal(document.createElement('div'));
 let divButtonVal = divButton.getVal();
@@ -92,6 +91,7 @@ elementSets.map((elem, index) => {
             rollDiceClassArray[index].setStyle(response);
         });
     });
+    console.log(randomArray[index]);
 });
 button.onclick = (e) => {
     suma = 0;

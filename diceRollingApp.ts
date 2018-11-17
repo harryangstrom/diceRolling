@@ -44,7 +44,7 @@ let suma: number;
 
 //Pulsador para jugar
 
-//TODO crear una genericClass<T> y el typeguard
+
 
 let divButton = new genericClass<Element>();
 divButton.setVal(document.createElement('div'));
@@ -131,6 +131,7 @@ elementSets.map( (elem, index) => {
           rollDiceClassArray[index].setStyle(response);
         })
     });
+  console.log(randomArray[index]);
 });
 
 (button as HTMLElement).onclick = (e) => {
